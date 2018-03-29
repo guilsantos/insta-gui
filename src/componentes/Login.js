@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {BrowserRouter} from 'react-router-dom';
 
 export default class Login extends Component {
 
@@ -28,7 +27,8 @@ export default class Login extends Component {
       }
     })
     .then(token => {
-      BrowserRouter.push('/timeline');
+      localStorage.setItem('auth-token', token);
+      this.props.history.push('/timeline');
     })
     .catch(error => {
       this.setState({msg: error.message})
