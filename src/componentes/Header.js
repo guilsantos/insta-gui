@@ -15,8 +15,6 @@ export default class Header extends Component {
               <li className="header-nav-item">
                 <a href="#">
                   ♡
-                  {/*<!--                 ♥-->*/}
-                  {/*<!--Quem deu like nas minhas fotos?-->*/}
                 </a>
               </li>
             </ul>
