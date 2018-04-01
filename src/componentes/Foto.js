@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 class FotoHeader extends Component {
-  render(){
-    return(
+  render() {
+    return (
       <header className="foto-header">
         <figure className="foto-usuario">
           <img src={this.props.foto.urlPerfil} alt="foto do usuario" />
@@ -18,8 +18,8 @@ class FotoHeader extends Component {
 }
 
 class FotoInfo extends Component {
-  render(){
-    return(
+  render() {
+    return (
       <div className="foto-info">
         <div className="foto-info-likes">
           {
@@ -49,22 +49,22 @@ class FotoInfo extends Component {
 }
 
 class FotoAtualizacoes extends Component {
-  like(event){
+  like(event) {
     event.preventDefault();
     this.props.like(this.props.foto.id);
   }
 
-  comenta(event){
+  comenta(event) {
     event.preventDefault();
     this.props.comenta(this.props.foto.id, this.comentario.value)
   }
 
-  render(){
+  render() {
     return (
       <section className="fotoAtualizacoes">
         <a onClick={this.like.bind(this)} className={this.props.foto.likeada ? 'fotoAtualizacoes-like-ativo' : 'fotoAtualizacoes-like'}>Likar</a>
         <form className="fotoAtualizacoes-form" onSubmit={this.comenta.bind(this)}>
-          <input type="text" placeholder="Adicione um comentário..." className="fotoAtualizacoes-form-campo" ref={input => this.comentario = input}/>
+          <input type="text" placeholder="Adicione um comentário..." className="fotoAtualizacoes-form-campo" ref={input => this.comentario = input} />
           <input type="submit" value="Comentar!" className="fotoAtualizacoes-form-submit" />
         </form>
       </section>
@@ -76,10 +76,10 @@ export default class FotoItem extends Component {
   render() {
     return (
       <div className="foto">
-        <FotoHeader foto={this.props.foto}/>
+        <FotoHeader foto={this.props.foto} />
         <img alt="foto" className="foto-src" src={this.props.foto.urlFoto} />
-        <FotoInfo foto={this.props.foto}/>
-        <FotoAtualizacoes {...this.props}/>
+        <FotoInfo foto={this.props.foto} />
+        <FotoAtualizacoes {...this.props} />
       </div>
     )
   }
