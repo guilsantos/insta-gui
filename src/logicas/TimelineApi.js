@@ -1,3 +1,5 @@
+import {listagem, like, comentario, notifica} from '../actions/actionCreator'
+
 export default class TimelineApi {
 
   static lista(urlPerfil) {
@@ -5,7 +7,7 @@ export default class TimelineApi {
       fetch(urlPerfil)
         .then(response => response.json())
         .then(fotos => {
-          dispatch({ type: 'LISTAGEM', fotos });
+          dispatch(listagem(fotos));
           return fotos;
         });
     }
@@ -22,17 +24,17 @@ export default class TimelineApi {
           }
         })
         .then(liker => {
-          dispatch({ type: 'LIKE', fotoId, liker});
+          dispatch(like(fotoId, liker));
           return liker;
         });
     }
   }
 
-  static comenta(fotoId, comentario) {
+  static comenta(fotoId, comentarioEntrada) {
     return dispatch => {
       const requestInfo = {
         method: 'POST',
-        body: JSON.stringify({ texto: comentario }),
+        body: JSON.stringify({ texto: comentarioEntrada }),
         headers: new Headers({
           'Content-type': 'application/json'
         })
@@ -47,8 +49,30 @@ export default class TimelineApi {
           }
         })
         .then(novoComentario => {
-          dispatch({ type: 'COMENTARIO', fotoId, novoComentario });
+          dispatch(comentario(fotoId, novoComentario));
           return novoComentario;
+        })
+    }
+  }
+
+  static pesquisa(login) {
+    return dispatch => {
+      fetch(`https://instalura-api.herokuapp.com/api/public/fotos/${login}`)
+        .then(response => {
+          if(response.ok){
+            return response.json();
+          } else {
+            throw new Error('não foi possivel pesquisar');
+          }
+        })
+        .then(fotos => {
+          if(fotos.length === 0){
+            dispatch(notifica('Usuario não encontrado'));
+          } else {
+            dispatch(notifica('Usuario encontrado'));
+          }
+          dispatch(listagem(fotos));
+          return fotos;
         })
     }
   }

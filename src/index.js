@@ -8,6 +8,11 @@ import './css/timeline.css';
 import './css/login.css';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter as Router, Route, Switch, Redirect, matchPath } from 'react-router-dom';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import { timeline } from './reducers/timeline';
+import { notificacao } from './reducers/header';
+import {Provider} from 'react-redux';
 
 function verificaAutenticacao(nextState, replace) {
 
@@ -34,13 +39,19 @@ function verificaAutenticacao(nextState, replace) {
   ;
 }
 
+const reducers = combineReducers({timeline, notificacao});
+const store = createStore(reducers, applyMiddleware(thunkMiddleware));
+
 ReactDOM.render((
-  <Router>
-    <Switch>
-      <Route exact path='/' component={Login}/>
-      <Route path='/login' component={Login}/>
-      <Route path='/logout' component={Logout}/>
-      <Route path='/timeline/:login?' render={verificaAutenticacao}/>
-    </Switch>
-  </Router>), document.getElementById('root'));
+  <Provider store={store}>
+    <Router>
+      <Switch>
+        <Route exact path='/' component={Login}/>
+        <Route path='/login' component={Login}/>
+        <Route path='/logout' component={Logout}/>
+        <Route path='/timeline/:login?' render={verificaAutenticacao}/>
+      </Switch>
+    </Router>
+  </Provider>
+  ), document.getElementById('root'));
 registerServiceWorker();
